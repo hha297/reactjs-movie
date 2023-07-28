@@ -6,7 +6,7 @@ const Header = () => {
             <NavLink to="/" className={({ isActive }) => (isActive ? 'text-primary' : '')}>
                 Home
             </NavLink>
-            <NavLink to="/movies" className={({ isActive }) => (isActive ? 'text-primary' : '')}>
+            <NavLink to="/movie" className={({ isActive }) => (isActive ? 'text-primary' : '')}>
                 Movies
             </NavLink>
         </header>
