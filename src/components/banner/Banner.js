@@ -1,6 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
-import { fetcher } from '../../config';
+import { fetcher } from '../../apiConfig/config';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from '../button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ const Banner = () => {
     const movies = data?.results || [];
 
     return (
-        <section className="banner h-[600px] page-container pb-20 overflow-hidden">
+        <section className="banner h-[600px] page-container pb-20 overflow-hidden ">
             <Swiper grabCursor="true" slidesPerView={'auto'}>
                 {movies.length > 0 &&
                     movies.map((item) => (
@@ -40,7 +40,9 @@ function BannerItem({ item }) {
             <div className="absolute left-5 bottom-5 w-full text-white">
                 <h2 className="font-bold text-3xl mb-5">{title}</h2>
                 <div className="flex item-center gap-x-3 mb-8">
-                    <span className="py-2 px-4 border border-white rounded-md">Adventure</span>
+                    <span className="py-2 px-4 border border-white rounded-md cursor-pointer hover:bg-gray-100 hover:text-rose-900">
+                        Adventure
+                    </span>
                     <span className="py-2 px-4 border border-white rounded-md">Adventure</span>
                     <span className="py-2 px-4 border border-white rounded-md">Adventure</span>
                 </div>
