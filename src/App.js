@@ -10,6 +10,7 @@ import Main from './layouts/Main';
 const HomePage = lazy(() => import('./pages/HomePage'));
 const MovieDetailsPage = lazy(() => import('./pages/MovieDetailsPage'));
 const MoviePage = lazy(() => import('./pages/MoviePage'));
+//const MoviePage = lazy(() => import('./pages/MoviePageV2'));
 
 function App() {
     return (
