@@ -1,34 +1,36 @@
-import { Fragment } from 'react';
-import { NavLink, Route, Routes } from 'react-router-dom';
-import MovieCard from './components/movie/MovieCard';
-import { SwiperSlide, Swiper } from 'swiper/react';
+import { Fragment, Suspense, lazy } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
 import 'swiper/scss';
-import MovieList from './components/movie/MovieList';
+
 import Banner from './components/banner/Banner';
-import Header from './layouts/Header';
+
 import Main from './layouts/Main';
-import HomePage from './pages/HomePage';
-import MoviePage from './pages/MoviePage';
-import MovieDetailsPage from './pages/MovieDetailsPage';
+
+const HomePage = lazy(() => import('./pages/HomePage'));
+const MovieDetailsPage = lazy(() => import('./pages/MovieDetailsPage'));
+const MoviePage = lazy(() => import('./pages/MoviePage'));
 
 function App() {
     return (
         <Fragment>
-            <Routes>
-                <Route path="/" element={<Main />}>
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <Banner />
-                                <HomePage />
-                            </>
-                        }
-                    ></Route>
-                    <Route path="/movie" element={<MoviePage />}></Route>
-                    <Route path="/movie/:movieId" element={<MovieDetailsPage />}></Route>
-                </Route>
-            </Routes>
+            <Suspense fallback={<></>}>
+                <Routes>
+                    <Route path="/" element={<Main />}>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <Banner />
+                                    <HomePage />
+                                </>
+                            }
+                        ></Route>
+                        <Route path="/movie" element={<MoviePage />}></Route>
+                        <Route path="/movie/:movieId" element={<MovieDetailsPage />}></Route>
+                    </Route>
+                </Routes>
+            </Suspense>
         </Fragment>
     );
 }

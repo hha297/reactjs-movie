@@ -1,14 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
-import { apiKey, fetcher } from '../config';
+import { fetcher, tmdbAPI } from '../config';
 // import Swiper from 'swiper/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import MovieCard from '../components/movie/MovieCard';
 
 const MovieDetailsPage = () => {
     const { movieId } = useParams();
-    const { data, error } = useSWR(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`, fetcher);
+    const { data } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
     if (!data) return null;
     const { backdrop_path, poster_path, title, genres, overview } = data;
     return (
@@ -17,21 +17,20 @@ const MovieDetailsPage = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-70"></div>
                 <div
                     className="w-full h-screen bg-cover bg-no-repeat"
-                    style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original/${backdrop_path})` }}
+                    style={{ backgroundImage: `url(${tmdbAPI.imageOrg(backdrop_path)})` }}
                 ></div>
             </div>
             <div className="h-[400px] w-[400px] mx-auto -mt-[240px] relative z-10 ">
-                <img
-                    src={`https://image.tmdb.org/t/p/original/${poster_path}`}
-                    alt=""
-                    className="w-full h-full object-cover rounded-full"
-                />
+                <img src={tmdbAPI.imageOrg(poster_path)} alt="" className="w-full h-full object-cover rounded-full" />
             </div>
             <h1 className="text-center text-3xl font-bold text-white my-8">{title}</h1>
             {genres.length > 0 && (
                 <div className="flex item-center justify-center gap-x-5 mb-10">
                     {genres.map((item) => (
-                        <span key={item.id} className="p-y-2 px-4 border-primary text-primary border rounded">
+                        <span
+                            key={item.id}
+                            className="p-y-2 px-4 border-primary text-primary border rounded cursor-pointer hover:bg-gray-100"
+                        >
                             {item.name}
                         </span>
                     ))}
@@ -47,7 +46,7 @@ const MovieDetailsPage = () => {
 
 function MovieCredits() {
     const { movieId } = useParams();
-    const { data, error } = useSWR(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`, fetcher);
+    const { data } = useSWR(tmdbAPI.getMovieType(movieId, 'credits'), fetcher);
     if (!data) return null;
     const { cast } = data;
     if (!cast || cast.length <= 0) return null;
@@ -59,7 +58,7 @@ function MovieCredits() {
                 {cast.slice(0, 16).map((item) => (
                     <div className="cast-item " key={item.id}>
                         <img
-                            src={`https://image.tmdb.org/t/p/original/${item.profile_path}`}
+                            src={tmdbAPI.imageOrg(item.profile_path)}
                             alt=""
                             className="w-[120px] h-[120px] object-cover rounded-full ml-6 mb-3"
                         />
@@ -74,7 +73,7 @@ function MovieCredits() {
 //<iframe width="885" height="498" src="https://www.youtube.com/embed/pIhAC2jkvhM" title="Eustass &quot;Captain&quot; Kid – Kẻ Điên Đi Trong Đêm Tối | Cảm nhân vật One Piece" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 function MovieVideos() {
     const { movieId } = useParams();
-    const { data, error } = useSWR(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`, fetcher);
+    const { data } = useSWR(tmdbAPI.getMovieType(movieId, 'videos'), fetcher);
     if (!data) return null;
     const { results } = data;
     if (!results || results.length <= 0) return null;
@@ -105,7 +104,7 @@ function MovieVideos() {
 
 function MovieSimilar() {
     const { movieId } = useParams();
-    const { data, error } = useSWR(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}`, fetcher);
+    const { data } = useSWR(tmdbAPI.getMovieType(movieId, 'similar'), fetcher);
     if (!data) return null;
     const { results } = data;
     if (!results || results.length <= 0) return null;
